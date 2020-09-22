@@ -3,14 +3,14 @@ import Style, { Label, Value, Change } from './styles'
 
 import editPencil from 'assets/editPencil.svg'
 
-interface ContainerChangeProps {
+interface ChangeSetterProps {
   label: string
   value: string
 }
 
-const ContainerChange: React.FC<ContainerChangeProps> = ({ label, value }) => {
+const ChangeSetter: React.FC<ChangeSetterProps> = ({ label, value }) => {
   return (
-    <Style className='ContainerChange'>
+    <Style>
       <Label>
         <span>{label}</span>
       </Label>
@@ -24,4 +24,4 @@ const ContainerChange: React.FC<ContainerChangeProps> = ({ label, value }) => {
   )
 }
 
-export default ContainerChange
+export default ChangeSetter

@@ -1,35 +1,12 @@
-import React, { useState } from 'react'
-import { Container, Card, Header, Personal } from './styles'
+import React, { useEffect, useState } from 'react'
+import Style, { Animation } from './styles'
 
-import ChangeSet from 'components/ChangeSet'
-
-import avatar from 'assets/avatar.jpg'
+import Professor from './Professor'
 
 import { useSprings } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
 
-const cards = [
-  {
-    name: 'Pessoal',
-    key: 1,
-  },
-  {
-    name: 'Estudante',
-    key: 2,
-  },
-  {
-    name: 'Professor',
-    key: 3,
-  },
-  {
-    name: 'Outro',
-    key: 4,
-  },
-  {
-    name: 'Outro',
-    key: 5,
-  },
-]
+const cards = ['personal', 'student', 'professor', 'clear']
 
 interface SliderProps {
   cardsQuant?: number
@@ -39,11 +16,16 @@ interface SliderProps {
 
 const Slider: React.FC<SliderProps> = ({
   cardWidth = 550,
-  cardsQuant = 3,
+  cardsQuant = 4,
   gap = 250,
 }) => {
   const [position, setPosition] = useState(0)
   const totalMove = cardWidth + gap
+
+  const maxLimit =
+    cardsQuant % 2 === 0
+      ? totalMove * ((cardsQuant - 2) / 2)
+      : totalMove * ((cardsQuant - 1) / 2)
 
   const springs = useSprings(
     cardsQuant,
@@ -53,50 +35,59 @@ const Slider: React.FC<SliderProps> = ({
   )
 
   const bind = useDrag(
-    ({ offset: [offx] }) => {
-      setPosition(offx)
+    ({ swipe: [swpx] }) => {
+      setPosition(prev => prev + swpx * totalMove)
+
+      if (position === maxLimit && swpx === 1) setPosition(maxLimit)
+      if (position === -maxLimit && swpx === -1) setPosition(-maxLimit)
     },
     {
-      bounds: {
-        left: -totalMove * (cardsQuant - 2),
-        right: totalMove * (cardsQuant - 2),
-      },
+      swipeDistance: 0,
+      swipeVelocity: 0,
     }
   )
 
   return (
-    <Container>
+    <Style gap={`${gap}px`} cardWidth={`${cardWidth}px`}>
       {springs.map((props, index) => {
         switch (index) {
           case 0:
             return (
-              <Personal key={cards[index].key} {...bind()} style={props}>
-                <Header>Informações Pessoais</Header>
+              <Animation key={cards[index]} {...bind()} style={props}>
+                <Professor />
+              </Animation>
+            )
 
-                <img src={avatar} alt='avatar' />
+          case 1:
+            return (
+              <Animation key={cards[index]} {...bind()} style={props}>
+                <Professor />
+              </Animation>
+            )
 
-                <form>
-                  <ChangeSet label='Nome:' value='Miguel' />
-                  <ChangeSet label='Sobrenome:' value='Andrade' />
-                  <ChangeSet
-                    label='E-mail:'
-                    value='miguelandradebarreto2@gmail.com'
-                  />
-                  <ChangeSet label='Nascimento:' value='19/08/2001' />
-                  <ChangeSet label='Senha:' value='**********' />
-                </form>
-              </Personal>
+          case 2:
+            return (
+              <Animation key={cards[index]} {...bind()} style={props}>
+                <Professor />
+              </Animation>
+            )
+
+          case 3:
+            return (
+              <Animation key={cards[index]} {...bind()} style={props}>
+                <Professor />
+              </Animation>
             )
 
           default:
             return (
-              <Card key={cards[index].key} {...bind()} style={props}>
-                {cards[index].name}
-              </Card>
+              <Animation key={cards[index]} {...bind()} style={props}>
+                <Professor />
+              </Animation>
             )
         }
       })}
-    </Container>
+    </Style>
   )
 }
 

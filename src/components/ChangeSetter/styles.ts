@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const Style = styled.div`
+const Style = styled.div.attrs({ className: 'ChangeSetter' })`
   display: grid;
   grid: 'labels value change' 100%/20% 65% 15%;
 
