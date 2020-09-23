@@ -4,9 +4,9 @@ const Style = styled.div.attrs({ className: 'ChangeSetter' })`
   display: grid;
   grid: 'labels value change' 100%/20% 65% 15%;
 
-  font-size: 1.5rem;
-  height: 40px;
   width: 500px;
+  height: 40px;
+  font-size: 1.5rem;
 
   border-radius: 5px;
   border: solid 2px #50393e;

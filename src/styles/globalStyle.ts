@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
+
   * {
     margin: 0;
     padding: 0;
@@ -13,7 +14,6 @@ export default createGlobalStyle`
 
     body {
       font-size: 1.6rem;
-
     }
   }
 
@@ -22,6 +22,7 @@ export default createGlobalStyle`
   }
 
   li {
+
     list-style-type: none;
   }
 
@@ -36,5 +37,4 @@ export default createGlobalStyle`
       box-shadow: initial;
     }
   }
-
 `

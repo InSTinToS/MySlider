@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import Style, { Animation } from './styles'
 
-import Professor from 'components/Cards/Professor'
+import Dots from './Dots'
+import Professor from 'Slider/Cards/Professor'
+
+import { useMasterCardPosition } from 'hooks/useMasterCardPosition'
 
 import { useSprings } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
-import Dots from './Dots'
 
 const cards = ['personal', 'student', 'professor', 'clear']
 
@@ -21,7 +23,10 @@ const Slider: React.FC<SliderProps> = ({
   gap = 250,
 }) => {
   const [position, setPosition] = useState(0)
+  const { masterCardPosition, setMasterCardPosition } = useMasterCardPosition()
   const totalMove = cardWidth + gap
+
+  const limits = cardsQuant % 2 === 0 ? cardsQuant / 2 : (cardsQuant - 1) / 2
 
   const maxLimit =
     cardsQuant % 2 === 0
@@ -36,10 +41,19 @@ const Slider: React.FC<SliderProps> = ({
   )
 
   const bind = useDrag(
-    ({ swipe: [swpx] }) => {
+    ({ swipe: [swpx], down }) => {
       setPosition(prev => prev + swpx * totalMove)
 
+      if (!down) {
+        if (swpx === 1 && masterCardPosition < limits)
+          setMasterCardPosition(masterCardPosition + 1)
+
+        if (swpx === -1 && masterCardPosition > -limits)
+          setMasterCardPosition(masterCardPosition - 1)
+      }
+
       if (position === maxLimit && swpx === 1) setPosition(maxLimit)
+
       if (position === -maxLimit && swpx === -1) setPosition(-maxLimit)
     },
     {
@@ -94,7 +108,7 @@ const Slider: React.FC<SliderProps> = ({
       <Dots
         onRightClick={() => setPosition(prev => prev - totalMove)}
         onLeftClick={() => setPosition(prev => prev + totalMove)}
-        cardsQuant={cardsQuant}
+        limits={limits}
       />
     </Style>
   )
