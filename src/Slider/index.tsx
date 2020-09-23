@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Style, { Animation } from './styles'
 
-import Professor from './Professor'
+import Professor from 'components/Cards/Professor'
 
 import { useSprings } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
+import Dots from './Dots'
 
 const cards = ['personal', 'student', 'professor', 'clear']
 
@@ -16,7 +17,7 @@ interface SliderProps {
 
 const Slider: React.FC<SliderProps> = ({
   cardWidth = 550,
-  cardsQuant = 4,
+  cardsQuant = 3,
   gap = 250,
 }) => {
   const [position, setPosition] = useState(0)
@@ -49,44 +50,52 @@ const Slider: React.FC<SliderProps> = ({
 
   return (
     <Style gap={`${gap}px`} cardWidth={`${cardWidth}px`}>
-      {springs.map((props, index) => {
-        switch (index) {
-          case 0:
-            return (
-              <Animation key={cards[index]} {...bind()} style={props}>
-                <Professor />
-              </Animation>
-            )
+      <div className='sliderWrapper'>
+        {springs.map((props, index) => {
+          switch (index) {
+            case 0:
+              return (
+                <Animation key={cards[index]} {...bind()} style={props}>
+                  <Professor />
+                </Animation>
+              )
 
-          case 1:
-            return (
-              <Animation key={cards[index]} {...bind()} style={props}>
-                <Professor />
-              </Animation>
-            )
+            case 1:
+              return (
+                <Animation key={cards[index]} {...bind()} style={props}>
+                  <Professor />
+                </Animation>
+              )
 
-          case 2:
-            return (
-              <Animation key={cards[index]} {...bind()} style={props}>
-                <Professor />
-              </Animation>
-            )
+            case 2:
+              return (
+                <Animation key={cards[index]} {...bind()} style={props}>
+                  <Professor />
+                </Animation>
+              )
 
-          case 3:
-            return (
-              <Animation key={cards[index]} {...bind()} style={props}>
-                <Professor />
-              </Animation>
-            )
+            case 3:
+              return (
+                <Animation key={cards[index]} {...bind()} style={props}>
+                  <Professor />
+                </Animation>
+              )
 
-          default:
-            return (
-              <Animation key={cards[index]} {...bind()} style={props}>
-                <Professor />
-              </Animation>
-            )
-        }
-      })}
+            default:
+              return (
+                <Animation key={cards[index]} {...bind()} style={props}>
+                  <Professor />
+                </Animation>
+              )
+          }
+        })}
+      </div>
+
+      <Dots
+        onRightClick={() => setPosition(prev => prev - totalMove)}
+        onLeftClick={() => setPosition(prev => prev + totalMove)}
+        cardsQuant={cardsQuant}
+      />
     </Style>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from './styles'
-import { Header } from '../cards'
+import { Header } from '../index'
 
 import ChangeSetter from 'components/ChangeSetter'
 

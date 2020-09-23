@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card } from '../cards'
+import { Card } from '../index'
 
 export const Container = styled(Card)`
   > img {

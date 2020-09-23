@@ -9,9 +9,16 @@ interface StyleProps {
 export const Animation = styled(animated.div)``
 
 const Style = styled(animated.div)<StyleProps>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+
+  &,
+  .sliderWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 64px;
+  }
 
   ${Animation} {
     height: 650px;
