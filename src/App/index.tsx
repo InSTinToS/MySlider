@@ -3,7 +3,7 @@ import { Container } from './styles'
 
 import GlobalStyle from 'styles/globalStyle'
 
-import Slider from 'Slider'
+import Slider from 'components/Slider'
 
 import GlobalContext from 'hooks'
 

@@ -12,7 +12,7 @@ export const Header = styled.div`
   height: 40px;
   border-radius: 16px 16px 0 0;
 
-  background-color: #ff6d8d;
+  background-color: #00cecb;
   color: white;
 `
 
@@ -25,10 +25,11 @@ export const Card = styled.div`
   flex-direction: column;
 
   width: 100%;
+  height: 100%;
   padding: 60px 20px 20px 20px;
   border-radius: 16px;
 
-  background-color: white;
+  background-color: #f7f4f3;
   box-shadow: 0px 10px 25px -10px rgba(0, 0, 0, 0.2);
   user-select: none;
 `

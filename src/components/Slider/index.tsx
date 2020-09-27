@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import Style, { Animation } from './styles'
 
 import Dots from './Dots'
-import Professor from 'Slider/Cards/Professor'
 
 import { useMasterCardPosition } from 'hooks/useMasterCardPosition'
+
+import Student from './Cards/Student'
+import Professor from './Cards/Professor'
+import Personal from './Cards/Personal'
 
 import { useSprings } from 'react-spring'
 import { useDrag } from 'react-use-gesture'
@@ -77,21 +80,14 @@ const Slider: React.FC<SliderProps> = ({
             case 1:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
+                  <Student />
                 </Animation>
               )
 
             case 2:
               return (
                 <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
-                </Animation>
-              )
-
-            case 3:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
+                  <Personal />
                 </Animation>
               )
 

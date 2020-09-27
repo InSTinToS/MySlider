@@ -8,5 +8,5 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
 
-  background-color: #50393e;
+  background-image: linear-gradient(-45deg, #643173 20%, #ff5e5b);
 `
