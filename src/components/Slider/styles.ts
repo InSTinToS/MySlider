@@ -1,33 +1,53 @@
 import styled from 'styled-components'
+import { motion } from 'framer-motion'
 
-import { animated } from 'react-spring'
-
-interface StyleProps {
-  cardWidth: string
-  gap: string
+interface ContainerProps {
+  width: string
 }
 
-export const Animation = styled(animated.div)``
+interface StyleProps {
+  gap: string
+  gapVertical: string
+}
 
-const Style = styled(animated.div)<StyleProps>`
+export const Container = styled(motion.li)<ContainerProps>`
+  width: ${({ width }) => width};
+`
+
+const Style = styled.div.attrs({
+  className: 'Slider',
+})<StyleProps>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: column;
 
-  &,
-  .sliderWrapper {
+  border: solid red 1px;
+
+  & > * {
     display: flex;
-    align-items: center;
     justify-content: center;
-
-    margin-bottom: 64px;
+    align-items: center;
   }
 
-  ${Animation} {
-    height: 650px;
-    width: ${({ cardWidth }) => cardWidth};
+  #slider {
+    border: solid black 3px;
+
+    ${Container} + ${Container} {
+      margin-left: ${({ gap }) => gap};
+    }
   }
 
-  ${Animation} + ${Animation} {
-    margin-left: ${({ gap }) => gap};
+  #buttons {
+    margin-top: ${({ gapVertical }) => gapVertical};
+
+    button {
+      width: 120px;
+      height: 40px;
+
+      background-color: white;
+      border: solid black 1px;
+    }
   }
 `
 

@@ -1,111 +1,85 @@
 import React, { useState } from 'react'
-import Style, { Animation } from './styles'
+import Style, { Container } from './styles'
 
-import Dots from './Dots'
+import { motion } from 'framer-motion'
 
-import { useMasterCardPosition } from 'hooks/useMasterCardPosition'
-
-import Student from './Cards/Student'
-import Professor from './Cards/Professor'
-import Personal from './Cards/Personal'
-
-import { useSprings } from 'react-spring'
-import { useDrag } from 'react-use-gesture'
-
-const cards = ['personal', 'student', 'professor', 'clear']
+interface ContainerProps {
+  component: React.ReactNode
+}
 
 interface SliderProps {
-  cardsQuant?: number
-  cardWidth?: number
-  gap?: number
+  containers: ContainerProps[]
+  width: number
+  quantity: number
+  gap: number
+  gapVertical?: number
 }
 
 const Slider: React.FC<SliderProps> = ({
-  cardWidth = 550,
-  cardsQuant = 3,
-  gap = 250,
+  containers,
+  gap,
+  width,
+  gapVertical = gap,
+  quantity,
 }) => {
-  const [position, setPosition] = useState(0)
-  const { masterCardPosition, setMasterCardPosition } = useMasterCardPosition()
-  const totalMove = cardWidth + gap
+  const [xValue, setXValue] = useState(0)
+  const move = width + gap // 750
+  const limit =
+    quantity % 2 === 0
+      ? move * ((quantity - 2) / 2)
+      : move * ((quantity - 1) / 2)
 
-  const limits = cardsQuant % 2 === 0 ? cardsQuant / 2 : (cardsQuant - 1) / 2
+  const onLeftClick = () => {
+    xValue > -limit && setXValue(xValue - move)
+  }
 
-  const maxLimit =
-    cardsQuant % 2 === 0
-      ? totalMove * ((cardsQuant - 2) / 2)
-      : totalMove * ((cardsQuant - 1) / 2)
+  const onRightClick = () => {
+    xValue < limit && setXValue(xValue + move)
+  }
 
-  const springs = useSprings(
-    cardsQuant,
-    cards.map(() => ({
-      x: position,
-    }))
-  )
+  const onDragged = (event: any, info: any) => {
+    const maxSwipeToAnimate = 20000
+    const offset = info.offset.x
+    const velocity = info.velocity.x
+    const swipe = Math.abs(offset) * velocity
 
-  const bind = useDrag(
-    ({ swipe: [swpx], down }) => {
-      setPosition(prev => prev + swpx * totalMove)
-
-      if (!down) {
-        if (swpx === 1 && masterCardPosition < limits)
-          setMasterCardPosition(masterCardPosition + 1)
-
-        if (swpx === -1 && masterCardPosition > -limits)
-          setMasterCardPosition(masterCardPosition - 1)
-      }
-
-      if (position === maxLimit && swpx === 1) setPosition(maxLimit)
-
-      if (position === -maxLimit && swpx === -1) setPosition(-maxLimit)
-    },
-    {
-      swipeDistance: 0,
-      swipeVelocity: 0,
+    if (swipe < -maxSwipeToAnimate) {
+      onLeftClick()
+    } else if (swipe > maxSwipeToAnimate) {
+      onRightClick()
     }
-  )
+  }
 
   return (
-    <Style gap={`${gap}px`} cardWidth={`${cardWidth}px`}>
-      <div className='sliderWrapper'>
-        {springs.map((props, index) => {
-          switch (index) {
-            case 0:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
-                </Animation>
-              )
+    <Style gap={`${gap}px`} gapVertical={`${gapVertical}px`}>
+      <motion.ul
+        id='slider'
+        drag='x'
+        dragElastic={0}
+        dragMomentum={false}
+        dragConstraints={{ left: 0, right: 0 }}
+        onDragEnd={onDragged}
+      >
+        {containers.map(container => (
+          <Container
+            width={`${width}px`}
+            animate={{ x: xValue }}
+            transition={{ type: 'tween', duration: 0.5 }}
+          >
+            {container.component}
+          </Container>
+        ))}
+      </motion.ul>
 
-            case 1:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Student />
-                </Animation>
-              )
+      <div id='buttons'>
+        <button type='button' onClick={onRightClick}>
+          left
+        </button>
 
-            case 2:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Personal />
-                </Animation>
-              )
-
-            default:
-              return (
-                <Animation key={cards[index]} {...bind()} style={props}>
-                  <Professor />
-                </Animation>
-              )
-          }
-        })}
+        <button type='button' onClick={onLeftClick}>
+          right
+        </button>
       </div>
-
-      <Dots
-        onRightClick={() => setPosition(prev => prev - totalMove)}
-        onLeftClick={() => setPosition(prev => prev + totalMove)}
-        limits={limits}
-      />
     </Style>
   )
 }
