@@ -1,5 +1,5 @@
 import React from 'react'
-import Style, { Label, Value, Change } from './styles'
+import Style, { Change, Label, Value } from './styles'
 
 import editPencil from 'assets/editPencil.svg'
 

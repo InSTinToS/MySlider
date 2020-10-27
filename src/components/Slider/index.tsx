@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import Style, { Container } from './styles'
 
+import Dots from 'components/Dots'
+
 import { motion } from 'framer-motion'
 
 interface ContainerProps {
   component: React.ReactNode
+  name: string
 }
 
 interface SliderProps {
   containers: ContainerProps[]
   width: number
-  quantity: number
   gap: number
   gapVertical?: number
 }
@@ -20,10 +22,14 @@ const Slider: React.FC<SliderProps> = ({
   gap,
   width,
   gapVertical = gap,
-  quantity,
 }) => {
+  const [makeLeftMove, setMakeLeftMove] = useState(false)
+  const [makeRightMove, setMakeRightMove] = useState(false)
   const [xValue, setXValue] = useState(0)
-  const move = width + gap // 750
+
+  const move = width + gap
+  const quantity = containers.length
+
   const limit =
     quantity % 2 === 0
       ? move * ((quantity - 2) / 2)
@@ -31,10 +37,12 @@ const Slider: React.FC<SliderProps> = ({
 
   const onLeftClick = () => {
     xValue > -limit && setXValue(xValue - move)
+    setMakeLeftMove(false)
   }
 
   const onRightClick = () => {
     xValue < limit && setXValue(xValue + move)
+    setMakeRightMove(false)
   }
 
   const onDragged = (event: any, info: any) => {
@@ -44,8 +52,10 @@ const Slider: React.FC<SliderProps> = ({
     const swipe = Math.abs(offset) * velocity
 
     if (swipe < -maxSwipeToAnimate) {
+      setMakeLeftMove(true)
       onLeftClick()
     } else if (swipe > maxSwipeToAnimate) {
+      setMakeRightMove(true)
       onRightClick()
     }
   }
@@ -62,6 +72,7 @@ const Slider: React.FC<SliderProps> = ({
       >
         {containers.map(container => (
           <Container
+            key={container.name}
             width={`${width}px`}
             animate={{ x: xValue }}
             transition={{ type: 'tween', duration: 0.5 }}
@@ -71,15 +82,16 @@ const Slider: React.FC<SliderProps> = ({
         ))}
       </motion.ul>
 
-      <div id='buttons'>
-        <button type='button' onClick={onRightClick}>
-          left
-        </button>
-
-        <button type='button' onClick={onLeftClick}>
-          right
-        </button>
-      </div>
+      <Dots
+        size={24}
+        gap={16}
+        radius={50}
+        quantity={quantity}
+        onRightClick={onRightClick}
+        onLeftClick={onLeftClick}
+        makeLeftTap={makeLeftMove}
+        makeRightTap={makeRightMove}
+      />
     </Style>
   )
 }

@@ -3,8 +3,9 @@ import Style from './styles'
 
 import { Header } from '../index'
 
-import ChangeSetter from 'components/ChangeSetter'
 import avatar from 'assets/avatar.jpg'
+
+import ChangeSetter from 'components/ChangeSetter'
 
 const Personal: React.FC = () => {
   return (

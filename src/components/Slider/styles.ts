@@ -1,5 +1,5 @@
-import styled from 'styled-components'
 import { motion } from 'framer-motion'
+import styled from 'styled-components'
 
 interface ContainerProps {
   width: string
@@ -22,8 +22,6 @@ const Style = styled.div.attrs({
   align-items: center;
   flex-direction: column;
 
-  border: solid red 1px;
-
   & > * {
     display: flex;
     justify-content: center;
@@ -31,24 +29,14 @@ const Style = styled.div.attrs({
   }
 
   #slider {
-    border: solid black 3px;
+    margin-bottom: ${({ gapVertical }) => gapVertical};
 
     ${Container} + ${Container} {
       margin-left: ${({ gap }) => gap};
     }
   }
-
-  #buttons {
-    margin-top: ${({ gapVertical }) => gapVertical};
-
-    button {
-      width: 120px;
-      height: 40px;
-
-      background-color: white;
-      border: solid black 1px;
-    }
-  }
 `
+
+Style.displayName = 'Slider-Style'
 
 export default Style

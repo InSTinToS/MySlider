@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-
 import { Card } from '../index'
+
+import styled from 'styled-components'
 
 const Style = styled(Card)`
   > img {
