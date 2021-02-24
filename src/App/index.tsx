@@ -13,7 +13,8 @@ import GlobalContext from 'hooks'
 const containers = [
   { name: 'Personal', component: <Personal /> },
   { name: 'Professor', component: <Professor /> },
-  { name: 'Student', component: <Student /> },
+  { name: 'Professor', component: <Professor /> },
+  { name: 'Professor', component: <Student /> },
 ]
 
 const App: React.FC = () => {

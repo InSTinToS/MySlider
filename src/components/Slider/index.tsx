@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Style, { Container } from './styles'
 
-import Dots from 'components/Dots'
+import Dots from './Dots'
 
 import { motion } from 'framer-motion'
 
@@ -23,29 +23,26 @@ const Slider: React.FC<SliderProps> = ({
   width,
   gapVertical = gap,
 }) => {
+  const quantity = containers.length
+  const move = width + gap
+  const isPar = quantity % 2 === 0
+  const limit = move * ((quantity - 1) / 2)
+
   const [makeLeftMove, setMakeLeftMove] = useState(false)
   const [makeRightMove, setMakeRightMove] = useState(false)
-  const [xValue, setXValue] = useState(0)
-
-  const move = width + gap
-  const quantity = containers.length
-
-  const limit =
-    quantity % 2 === 0
-      ? move * ((quantity - 2) / 2)
-      : move * ((quantity - 1) / 2)
+  const [xValue, setXValue] = useState(isPar ? move / 2 : 0)
 
   const onLeftClick = () => {
-    xValue > -limit && setXValue(xValue - move)
+    if (xValue > -limit) setXValue(xValue - move)
     setMakeLeftMove(false)
   }
 
   const onRightClick = () => {
-    xValue < limit && setXValue(xValue + move)
+    if (xValue < limit) setXValue(xValue + move)
     setMakeRightMove(false)
   }
 
-  const onDragged = (event: any, info: any) => {
+  const onDragged = (_event: any, info: any) => {
     const maxSwipeToAnimate = 20000
     const offset = info.offset.x
     const velocity = info.velocity.x

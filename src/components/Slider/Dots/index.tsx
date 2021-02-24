@@ -26,11 +26,12 @@ const Dots: React.FC<DotsProps> = ({
   makeLeftTap = false,
   makeRightTap = false,
 }) => {
-  const [position, setPosition] = useState(0)
+  const isPar = quantity % 2 === 0
+  const [position, setPosition] = useState(isPar ? 1 : 0)
 
   const move = gap + size
 
-  const limit = quantity % 2 === 0 ? (quantity - 2) / 2 : (quantity - 1) / 2
+  const limit = (quantity - 1) / 2
 
   const newLeftAnimation = useAnimation()
   const leftAnimation = useAnimation()
@@ -164,7 +165,7 @@ const Dots: React.FC<DotsProps> = ({
       onLeftClick()
       await leftMove()
       await resetLeftMove()
-      setPosition(position - 1)
+      setPosition(before => (before - 1 === 0 ? before - 2 : before - 1))
     }
   }, [onLeftClick, leftMove, resetLeftMove, position, limit])
 
@@ -173,7 +174,7 @@ const Dots: React.FC<DotsProps> = ({
       onRightClick()
       await rightMove()
       await resetRightMove()
-      setPosition(position + 1)
+      setPosition(before => (before + 1 === 0 ? before + 2 : before + 1))
     }
   }, [onRightClick, rightMove, resetRightMove, limit, position])
 
